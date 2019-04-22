@@ -1,5 +1,7 @@
 package br.com.ia.genetic.algorithm.functions;
 
+import java.util.Collection;
+
 /**
  * Função que <b>subtrai</b> o valor dado pelo valor da função pai:<br>
  * <ul>
@@ -23,6 +25,13 @@ public class Subtraction
 	@Override
 	public double getValue(
 		double... variables )
+	{
+		return subtraction - super.getValue( variables );
+	}
+	
+	@Override
+	public double getValue(
+		final Collection<Double> variables )
 	{
 		return subtraction - super.getValue( variables );
 	}

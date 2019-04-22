@@ -1,13 +1,16 @@
 package br.com.ia.genetic.algorithm;
 
+import static br.com.ia.genetic.algorithm.model.converter.BinaryMultiDimensionalConverter.convert;
 import static java.lang.Thread.currentThread;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import br.com.ia.genetic.algorithm.messages.AbstractSubject;
 import br.com.ia.genetic.algorithm.messages.algorithm.AlgorithmResult;
@@ -17,6 +20,7 @@ import br.com.ia.genetic.algorithm.model.Binary;
 import br.com.ia.genetic.algorithm.model.Chromosome;
 import br.com.ia.genetic.algorithm.model.Pair;
 import br.com.ia.genetic.algorithm.model.converter.BinaryDoubleConverter;
+import br.com.ia.genetic.algorithm.model.converter.BinaryMultiDimensionalConverter;
 import br.com.ia.genetic.algorithm.model.information.Algorithm;
 import br.com.ia.genetic.algorithm.model.information.FitnessSnapshot;
 import br.com.ia.genetic.algorithm.model.information.Problem;
@@ -65,8 +69,11 @@ final class GeneticAlgorithm
         final Iterable<Chromosome> population )
     {
         for( final Chromosome chromosome : population ) {
-            final double realValue = BinaryDoubleConverter.convert( chromosome.getBinary(), problem );
-            chromosome.setFitness( problem.getFunction().getValue( realValue ) );
+        	final List<Binary> binaries = convert( chromosome.getBinary(), problem.getNumberOfDimensions() );
+            final List<Double> realValues = binaries.stream()
+            	.map( binary -> BinaryDoubleConverter.convert( binary, problem ) )
+            	.collect( toList() );
+            chromosome.setFitness( problem.getFunction().getValue( realValues ) );
         }
     }
 

@@ -3,11 +3,27 @@ plugins {
 }
 
 repositories {
+    maven { url "http://maven.jzy3d.org/releases" }
+    mavenCentral()
     jcenter()
 }
 
-dependencies {
-    implementation 'com.google.guava:guava:26.0-jre'
+def dependencyGroup(Closure closure) {
+   closure.delegate = dependencies
+   return closure
+}
 
+def jzy3d = dependencyGroup {
+	implementation 'org.jzy3d:jzy3d-api:1.0.2'
+	implementation 'org.jzy3d:jzy3d-javafx:1.0.2'
+	implementation 'org.jzy3d:jzy3d-jdt-core:1.0.2'
+	implementation 'org.jzy3d:jzy3d-swt:1.0.2'
+	implementation 'org.jzy3d:jzy3d-graphs:1.0.2'
+	compile group: 'org.jzy3d', name: 'jzy3d-master', version: '1.0.2', ext: 'pom'
+}
+
+dependencies {
+	jzy3d()
+    implementation 'com.google.guava:guava:26.0-jre'	
     testImplementation 'junit:junit:4.12'
 }

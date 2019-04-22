@@ -3,6 +3,8 @@ package br.com.ia.genetic.algorithm.functions;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 
+import java.util.Collection;
+
 /**
  * <p>
  * Função de Rastringins, retratada em um espaço d-dimensional.<br>
@@ -36,6 +38,17 @@ public class Rastringin
             result += xi * xi - 10 * cos( 2 * PI * xi );
         }
         return result;
+    }
+
+    @Override
+    public double getValue(
+    	final Collection<Double> variables )
+    {
+    	double result = 10 * variables.size();
+    	for( final double xi : variables ) {
+    		result += xi * xi - 10 * cos( 2 * PI * xi );
+    	}
+    	return result;
     }
 
     @Override
