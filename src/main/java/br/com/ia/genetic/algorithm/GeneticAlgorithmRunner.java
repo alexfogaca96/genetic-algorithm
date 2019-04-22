@@ -6,6 +6,7 @@ import java.util.Map;
 import br.com.ia.genetic.algorithm.messages.Event;
 import br.com.ia.genetic.algorithm.messages.Observer;
 import br.com.ia.genetic.algorithm.messages.algorithm.AlgorithmResult;
+import br.com.ia.genetic.algorithm.messages.algorithm.BestChromosome;
 import br.com.ia.genetic.algorithm.messages.algorithm.PopulationSnapshot;
 import br.com.ia.genetic.algorithm.model.information.Algorithm;
 import br.com.ia.genetic.algorithm.model.information.Problem;
@@ -56,6 +57,10 @@ public final class GeneticAlgorithmRunner
         if( PopulationSnapshot.class.isAssignableFrom( clazz ) ) {
             final PopulationSnapshot snapshot = (PopulationSnapshot) event;
             snapshot.print();
+        }
+        if( BestChromosome.class.isAssignableFrom( clazz ) ) {
+        	final BestChromosome snapshot = (BestChromosome) event;
+        	snapshot.print();
         }
     }
 }

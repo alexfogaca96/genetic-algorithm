@@ -11,6 +11,7 @@ import java.util.Random;
 
 import br.com.ia.genetic.algorithm.messages.AbstractSubject;
 import br.com.ia.genetic.algorithm.messages.algorithm.AlgorithmResult;
+import br.com.ia.genetic.algorithm.messages.algorithm.BestChromosome;
 import br.com.ia.genetic.algorithm.messages.algorithm.PopulationSnapshot;
 import br.com.ia.genetic.algorithm.model.Binary;
 import br.com.ia.genetic.algorithm.model.Chromosome;
@@ -45,7 +46,9 @@ final class GeneticAlgorithm
             population = mutatedPopulation;
             generation++;
         }
-        notifyObservers( AlgorithmResult.from( currentThread().getName(), problem, algorithm, population, fitnessData ) );
+        notifyObservers( asList(
+        	AlgorithmResult.from( currentThread().getName(), problem, algorithm, population, fitnessData ),
+        	BestChromosome.from( problem, population ) ) );
     }
 
     private List<Chromosome> initializeRandomPopulation()
@@ -76,7 +79,7 @@ final class GeneticAlgorithm
         }
         return population.stream()
             .map( Chromosome::getFitness )
-            .anyMatch( fitness -> Math.abs( fitness ) <= problem.getAcceptableError() );
+            .anyMatch( fitness -> problem.getErrorFunction().test( fitness ) );
     }
 
     private List<Chromosome> applySurvivalStrategy(
@@ -91,36 +94,45 @@ final class GeneticAlgorithm
         final Random random = new Random();
         final List<Chromosome> newPopulation = new ArrayList<>( population.size() );
         for( int individual = 0; individual < population.size(); individual++ ) {
-            if( random.nextDouble() <= algorithm.getCrossoverProbability() ) {
-                int secondParent = random.nextInt( population.size() );
-                while( secondParent == individual ) {
-                    secondParent = random.nextInt( population.size() );
-                }
-                final Pair<Chromosome,Chromosome> pair = new Pair<>( population.get( individual ), population.get( secondParent ) );
-                final Pair<Chromosome,Chromosome> newPair = algorithm.getCrossoverStrategy().apply( pair );
-                final List<Chromosome> parents = asList( newPair.getFirst(), newPair.getSecond() );
-                computeFitness( parents );
-                newPopulation.addAll( parents );
-                individual++;
-            } else {
-                newPopulation.add( population.get( individual ) );
+            if( random.nextDouble() > algorithm.getCrossoverProbability() ) {
+            	newPopulation.add( population.get( individual ) );
+            	continue;
             }
+	    	final int secondParent = getRandomSecondParent( random, population.size(), individual );
+	        final Pair<Chromosome,Chromosome> pair = new Pair<>( population.get( individual ), population.get( secondParent ) );
+	        final Pair<Chromosome,Chromosome> newPair = algorithm.getCrossoverStrategy().apply( pair );
+	        final List<Chromosome> parents = asList( newPair.getFirst(), newPair.getSecond() );
+	        computeFitness( parents );
+	        newPopulation.addAll( parents );
+	        individual++;
         }
         return newPopulation;
     }
 
-    private List<Chromosome> applyMutation(
+    private static int getRandomSecondParent(
+		final Random random,
+		final int populationSize,
+		final int firstParent )
+	{
+    	int secondParent = random.nextInt( populationSize );
+        while( secondParent == firstParent ) {
+            secondParent = random.nextInt( populationSize );
+        }
+		return secondParent;
+	}
+
+	private List<Chromosome> applyMutation(
         final Collection<Chromosome> population )
     {
         final Random random = new Random();
         final List<Chromosome> newPopulation = new ArrayList<>( population.size() );
         for( final Chromosome chromosome : population ) {
-            if( random.nextDouble() <= algorithm.getMutationProbability() ) {
-                final Chromosome newChromosome = algorithm.getMutationStrategy().apply( chromosome );
-                newPopulation.add( newChromosome );
-            } else {
-                newPopulation.add( chromosome );
+            if( random.nextDouble() > algorithm.getMutationProbability() ) {
+            	newPopulation.add( chromosome );
+            	continue;
             }
+            final Chromosome newChromosome = algorithm.getMutationStrategy().apply( chromosome );
+            newPopulation.add( newChromosome );
         }
         computeFitness( newPopulation );
         return newPopulation;

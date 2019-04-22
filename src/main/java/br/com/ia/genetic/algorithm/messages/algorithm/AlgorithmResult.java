@@ -73,13 +73,13 @@ public class AlgorithmResult
     public void print()
     {
         final StringBuilder builder = new StringBuilder();
-        builder.append( problem + " -> " + problem.getAcceptableError() + "\n" );
+        builder.append( problem + " -> " + problem.getErrorFunction() + "\n" );
         builder.append( algorithm + "\n" );
         builder.append( "Final population: [\n" );
         population.forEach( individual -> builder.append( "   " + individual + "\n" ) );
         builder.append( "]\n" );
         builder.append( "Fitness snapshots: [\n" );
-        builder.append( " gen: maxFit | minFit | avgFit\n" );
+        builder.append( " gen: maxFit  | minFit  | avgFit\n" );
         fitnessData.forEach( data -> builder.append(
             String.format( "   %d: %.4f | %.4f | %.4f\n",
                 data.getGeneration(),

@@ -1,5 +1,7 @@
 package br.com.ia.genetic.algorithm.model.information;
 
+import java.util.function.Predicate;
+
 import br.com.ia.genetic.algorithm.functions.Function;
 
 public class Problem
@@ -8,7 +10,7 @@ public class Problem
     private final double maximumNumber;
     private final int numberOfBits;
     private final Function function;
-    private final double acceptableError;
+    private final Predicate<Double> errorFunction;
 
     public static Builder builder(
         final double minimumNumber,
@@ -37,9 +39,9 @@ public class Problem
         return function;
     }
 
-    public double getAcceptableError()
+    public Predicate<Double> getErrorFunction()
     {
-        return acceptableError;
+        return errorFunction;
     }
 
     public static class Builder
@@ -48,7 +50,7 @@ public class Problem
         private final double maximumNumber;
         private int numberOfBits;
         private Function function;
-        private double acceptableError;
+        private Predicate<Double> errorFunction;
 
         private Builder(
             final double minimumNumber,
@@ -78,27 +80,24 @@ public class Problem
             return this;
         }
 
-        public Builder acceptableError(
-            final double acceptableError )
+        public Builder errorFunction(
+            final Predicate<Double> errorFunction )
         {
-            if( acceptableError <= 0 ) {
-                throw new IllegalArgumentException( "Acceptable error must be bigger than 0." );
-            }
-            this.acceptableError = acceptableError;
+            this.errorFunction = errorFunction;
             return this;
         }
 
         public Problem build()
         {
-            if( numberOfBits == 0 || function == null || acceptableError == 0d ) {
-                throw new IllegalStateException( "Problem can't be built until all field are set." );
+            if( numberOfBits == 0 || function == null ) {
+                throw new IllegalStateException( "Problem can't be built until all fields are set." );
             }
             return new Problem(
                 minimumNumber,
                 maximumNumber,
                 numberOfBits,
                 function,
-                acceptableError );
+                errorFunction );
         }
     }
 
@@ -107,13 +106,13 @@ public class Problem
         final double maximumNumber,
         final int numberOfBits,
         final Function function,
-        final double acceptableError )
+        final Predicate<Double> errorFunction )
     {
         this.maximumNumber = maximumNumber;
         this.minimumNumber = minimumNumber;
         this.numberOfBits = numberOfBits;
         this.function = function;
-        this.acceptableError = acceptableError;
+        this.errorFunction = errorFunction;
     }
 
     @Override
