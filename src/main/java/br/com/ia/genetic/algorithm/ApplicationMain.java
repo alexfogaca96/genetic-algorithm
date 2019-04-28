@@ -29,10 +29,10 @@ public final class ApplicationMain
             .mutationProbability( 0.20 )
             .mutationStrategy( Mutation.N_GENES )
             .matingSelectionStrategy( MatingSelection.FITNESS_PROPORTIONATE )
-            .propagationQuantity( 1 )
-            .propagationStrategy( ResultPropagation.DEFAULT )
+            .propagationQuantity( 3 )
+            .propagationStrategy( ResultPropagation.IMMORTALITY )
             .maximumGenerations( 100 )
-            .populationSize( 10 )
+            .populationSize( 20 )
             .build();
 
         new GeneticAlgorithmRunner().run( problem, algorithm );

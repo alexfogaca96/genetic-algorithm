@@ -17,7 +17,7 @@ public class Algorithm
     private static final MatingSelection DEF_MATING_SELECTION_STRATEGY = MatingSelection.FITNESS_PROPORTIONATE;
     private static final Crossover DEF_CROSSOVER_STRATEGY = Crossover.SINGLE_POINT;
     private static final Mutation DEF_MUTATION_STRATEGY = Mutation.ONE_GENE;
-    private static final ResultPropagation DEF_PROPAGATION_STRATEGY = ResultPropagation.DEFAULT;
+    private static final ResultPropagation DEF_PROPAGATION_STRATEGY = ResultPropagation.NONE;
 
     private final int maximumGenerations;
     private final int populationSize;
