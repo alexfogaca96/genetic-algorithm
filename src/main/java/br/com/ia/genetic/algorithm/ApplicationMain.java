@@ -16,19 +16,20 @@ public final class ApplicationMain
 		final double acceptableError = 0.005;
 		
 		final Problem problem = Problem.builder( -5d, 5d )
-			.numberOfBits( 10 )
+			.numberOfBits( 20 )
+			.numberOfDimensions( 2 )
 			.function( new Subtraction( 100d, Rastringin.INSTANCE ) )
-			.errorFunction( (fitness) -> (100d - fitness) < acceptableError )
+			.errorFunction( (fitness) -> ( 100d - fitness ) < acceptableError )
 			.build();
 		
 		final Algorithm algorithm = Algorithm.builder()
 			.crossoverProbability( 0.8 )
-			.crossoverStrategy( Crossover.SINGLE_POINT )
-			.mutationProbability( 0.1 )
-			.mutationStrategy( Mutation.ONE_GENE )
+			.crossoverStrategy( Crossover.UNIFORM )
+			.mutationProbability( 0.2 )
+			.mutationStrategy( Mutation.PROBABILITY_PER_GENE )
 			.matingSelectionStrategy( MatingSelection.FITNESS_PROPORTIONATE )
 			.maximumGenerations( 1000 )
-			.populationSize( 30 )
+			.populationSize( 50 )
 			.build();
 
 		new GeneticAlgorithmRunner().run( problem, algorithm );

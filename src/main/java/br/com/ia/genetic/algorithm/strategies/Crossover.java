@@ -14,7 +14,7 @@ public enum Crossover
     SINGLE_POINT
     {
         @Override
-        int getMask(
+        long getMask(
             final int bits )
         {
             final Random random = new Random();
@@ -27,13 +27,13 @@ public enum Crossover
             for( int i = point + 1; i < bits; i++ ) {
                 mask.append( "1" );
             }
-            return Integer.parseInt( mask.toString(), 2 );
+            return Long.parseLong( mask.toString(), 2 );
         }
     },
     TWO_POINT
     {
         @Override
-        int getMask(
+        long getMask(
             final int bits )
         {
             final Random random = new Random();
@@ -52,13 +52,13 @@ public enum Crossover
             for( int i = max + 1; i < bits; i++ ) {
                 mask.append( "0" );
             }
-            return Integer.parseInt( mask.toString(), 2 );
+            return Long.parseLong( mask.toString(), 2 );
         }
     },
     UNIFORM
     {
         @Override
-        int getMask(
+        long getMask(
             final int bits )
         {
             final StringBuilder mask = new StringBuilder();
@@ -66,11 +66,11 @@ public enum Crossover
             for( int i = 0; i < bits; i++ ) {
                 mask.append( random.nextDouble() < 0.5 ? "0" : "1" );
             }
-            return Integer.parseInt( mask.toString(), 2 );
+            return Long.parseLong( mask.toString(), 2 );
         }
     };
 
-    abstract int getMask(
+    abstract long getMask(
         final int bits );
 
     public Pair<Chromosome,Chromosome> apply(

@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import br.com.ia.genetic.algorithm.messages.AbstractSubject;
 import br.com.ia.genetic.algorithm.messages.algorithm.AlgorithmResult;
@@ -20,7 +19,6 @@ import br.com.ia.genetic.algorithm.model.Binary;
 import br.com.ia.genetic.algorithm.model.Chromosome;
 import br.com.ia.genetic.algorithm.model.Pair;
 import br.com.ia.genetic.algorithm.model.converter.BinaryDoubleConverter;
-import br.com.ia.genetic.algorithm.model.converter.BinaryMultiDimensionalConverter;
 import br.com.ia.genetic.algorithm.model.information.Algorithm;
 import br.com.ia.genetic.algorithm.model.information.FitnessSnapshot;
 import br.com.ia.genetic.algorithm.model.information.Problem;
@@ -101,7 +99,7 @@ final class GeneticAlgorithm
         final Random random = new Random();
         final List<Chromosome> newPopulation = new ArrayList<>( population.size() );
         for( int individual = 0; individual < population.size(); individual++ ) {
-            if( random.nextDouble() > algorithm.getCrossoverProbability() ) {
+            if( random.nextDouble() > algorithm.getCrossoverProbability() || individual == population.size() - 1 ) {
             	newPopulation.add( population.get( individual ) );
             	continue;
             }

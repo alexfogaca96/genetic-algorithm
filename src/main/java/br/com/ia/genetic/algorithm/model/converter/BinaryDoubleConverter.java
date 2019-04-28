@@ -47,7 +47,7 @@ public final class BinaryDoubleConverter
     private static double conversionError(
         final Problem problem )
     {
-        int denominator = Double.valueOf( Math.pow( 2, problem.getNumberOfBits() ) ).intValue();
+        int denominator = Double.valueOf( Math.pow( 2, problem.getNumberOfBits() / problem.getNumberOfDimensions() ) ).intValue();
         if( problem.getMinimumNumber() == 0 ) {
             denominator -= 1;
         }

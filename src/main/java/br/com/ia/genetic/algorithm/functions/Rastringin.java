@@ -7,7 +7,7 @@ import java.util.Collection;
 
 /**
  * <p>
- * Função de Rastringins, retratada em um espaço d-dimensional.<br>
+ * Função de Rastringin, retratada em um espaço d-dimensional.<br>
  * Característica pela <b>hostilidade à busca locais</b>, mas com máximos ou
  * mínimos globais bem definidos.
  * </p>

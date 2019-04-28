@@ -39,6 +39,6 @@ public class Subtraction
 	@Override
 	public String toString()
 	{
-		return "Subtraction of " + subtraction + "( " + super.toString() + " )";
+		return "Subtraction of " + subtraction + " from ( " + super.toString() + " )";
 	}
 }

@@ -6,11 +6,11 @@ import java.util.Objects;
 
 public class Binary
 {
-    private final int bits;
+    private final long bits;
     private final int numberOfBits;
 
     private Binary(
-        final int bits,
+        final long bits,
         final int numberOfBits )
     {
         this.bits = bits;
@@ -18,7 +18,7 @@ public class Binary
     }
 
     public static Binary of(
-        final int bits,
+        final long bits,
         final int numberOfBits )
     {
         return new Binary( bits, numberOfBits );
@@ -27,11 +27,11 @@ public class Binary
     public static Binary random(
         final int numberOfBits )
     {
-        final int randomNumber = Double.valueOf( Math.random() * Math.pow( 2, numberOfBits ) ).intValue();
+        final long randomNumber = Double.valueOf( Math.random() * Math.pow( 2, numberOfBits ) ).intValue();
         return new Binary( randomNumber, numberOfBits );
     }
 
-    public int getNumber()
+    public long getNumber()
     {
         return bits;
     }
@@ -111,6 +111,6 @@ public class Binary
     @Override
     public String toString()
     {
-        return String.format( "%0" + numberOfBits + "d", Integer.parseInt( Integer.toBinaryString( bits ) ) );
+        return Long.toBinaryString( bits );
     }
 }
