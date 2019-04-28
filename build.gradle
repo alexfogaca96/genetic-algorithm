@@ -3,10 +3,14 @@ plugins {
 }
 
 repositories {
+    maven { url "https://mvnrepository.com/artifact/org.jfree/jfreechart" }
     mavenCentral()
     jcenter()
 }
 
 dependencies {
+	compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
+	compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
     implementation 'com.google.guava:guava:26.0-jre'	
+    testImplementation 'junit:junit:4.12'
 }
