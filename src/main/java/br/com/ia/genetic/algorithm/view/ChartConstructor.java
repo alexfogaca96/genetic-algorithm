@@ -32,7 +32,7 @@ public class ChartConstructor{
 									,false);
 		int chartWidth = 700;
 		int chartHeight = 500;
-		String fileName = title.replace(' ', '_') + ".png";
+		String fileName = title.replace(" ", "") + ".png";
 		ChartUtils.writeChartAsPNG(new FileOutputStream(fileName),chart, chartWidth,chartHeight);
 		return fileName;
 	}

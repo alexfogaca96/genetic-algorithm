@@ -44,6 +44,7 @@ final class GeneticAlgorithm
             final List<Chromosome> newPopulation = applySurvivalStrategy( population );
             final List<Chromosome> crossoveredPopulation = applyCrossoverOrCloning( newPopulation );
             final List<Chromosome> mutatedPopulation = applyMutation( crossoveredPopulation );
+            postGeneticOperatorsChanges( population, mutatedPopulation );
             fitnessData.add( FitnessSnapshot.from( generation, mutatedPopulation ) );
             population = mutatedPopulation;
             generation++;
@@ -51,6 +52,13 @@ final class GeneticAlgorithm
         notifyObservers( asList(
             AlgorithmResult.from( currentThread().getName(), problem, algorithm, population, fitnessData ),
             BestChromosome.from( problem, population ) ) );
+    }
+
+    private void postGeneticOperatorsChanges(
+        final List<Chromosome> oldPopulation,
+        final List<Chromosome> newPopulation )
+    {
+        algorithm.getPropagationStrategy().propagate( algorithm.getPropagationQuantity(), oldPopulation, newPopulation );
     }
 
     private List<Chromosome> initializeRandomPopulation()
