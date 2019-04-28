@@ -9,36 +9,36 @@ import java.util.Collection;
  * </ul>
  */
 public class Subtraction
-	extends
-		FunctionDecorator
+    extends
+        FunctionDecorator
 {
-	private final double subtraction;
-	
-	public Subtraction(
-		final double subtraction,
-		Function function )
-	{
-		super( function );
-		this.subtraction = subtraction;
-	}
+    private final double subtraction;
 
-	@Override
-	public double getValue(
-		double... variables )
-	{
-		return subtraction - super.getValue( variables );
-	}
-	
-	@Override
-	public double getValue(
-		final Collection<Double> variables )
-	{
-		return subtraction - super.getValue( variables );
-	}
-	
-	@Override
-	public String toString()
-	{
-		return "Subtraction of " + subtraction + " from ( " + super.toString() + " )";
-	}
+    public Subtraction(
+        final double subtraction,
+        Function function )
+    {
+        super( function );
+        this.subtraction = subtraction;
+    }
+
+    @Override
+    public double getValue(
+        double... variables )
+    {
+        return subtraction - super.getValue( variables );
+    }
+
+    @Override
+    public double getValue(
+        final Collection<Double> variables )
+    {
+        return subtraction - super.getValue( variables );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Subtraction of " + subtraction + " from ( " + super.toString() + " )";
+    }
 }

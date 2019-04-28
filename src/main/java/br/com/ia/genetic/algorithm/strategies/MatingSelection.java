@@ -112,7 +112,7 @@ public enum MatingSelection
             throw new UnsupportedOperationException( "Still not implemented." );
         }
     };
-	
-	public abstract List<Chromosome> apply(
-		List<Chromosome> population );
+
+    public abstract List<Chromosome> apply(
+        List<Chromosome> population );
 }

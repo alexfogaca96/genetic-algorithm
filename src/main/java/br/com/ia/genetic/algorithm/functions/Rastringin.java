@@ -42,13 +42,13 @@ public class Rastringin
 
     @Override
     public double getValue(
-    	final Collection<Double> variables )
+        final Collection<Double> variables )
     {
-    	double result = 10 * variables.size();
-    	for( final double xi : variables ) {
-    		result += xi * xi - 10 * cos( 2 * PI * xi );
-    	}
-    	return result;
+        double result = 10 * variables.size();
+        for( final double xi : variables ) {
+            result += xi * xi - 10 * cos( 2 * PI * xi );
+        }
+        return result;
     }
 
     @Override

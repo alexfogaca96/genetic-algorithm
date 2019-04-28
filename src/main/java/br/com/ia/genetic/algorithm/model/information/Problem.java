@@ -34,10 +34,10 @@ public class Problem
     {
         return numberOfBits;
     }
-    
+
     public int getNumberOfDimensions()
     {
-    	return numberOfDimensions;
+        return numberOfDimensions;
     }
 
     public Function getFunction()
@@ -79,15 +79,15 @@ public class Problem
             this.numberOfBits = numberOfBits;
             return this;
         }
-        
+
         public Builder numberOfDimensions(
-        	final int numberOfDimensions )
+            final int numberOfDimensions )
         {
-        	if( numberOfDimensions <= 0 ) {
-        		throw new IllegalArgumentException( "Number of dimensions must be bigger than 0." );
-        	}
-        	this.numberOfDimensions= numberOfDimensions;
-        	return this;
+            if( numberOfDimensions <= 0 ) {
+                throw new IllegalArgumentException( "Number of dimensions must be bigger than 0." );
+            }
+            this.numberOfDimensions = numberOfDimensions;
+            return this;
         }
 
         public Builder function(
@@ -109,8 +109,8 @@ public class Problem
             if( numberOfBits == 0 || function == null ) {
                 throw new IllegalStateException( "Problem can't be built until all fields are set." );
             }
-            if(	numberOfBits % numberOfDimensions != 0) {
-            	throw new IllegalStateException( "Number of bits doesn't fit perfectly on number of dimensions." );
+            if( numberOfBits % numberOfDimensions != 0 ) {
+                throw new IllegalStateException( "Number of bits doesn't fit perfectly on number of dimensions." );
             }
             return new Problem(
                 minimumNumber,

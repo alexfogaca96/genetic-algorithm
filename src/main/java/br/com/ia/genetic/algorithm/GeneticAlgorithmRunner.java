@@ -59,8 +59,8 @@ public final class GeneticAlgorithmRunner
             snapshot.print();
         }
         if( BestChromosome.class.isAssignableFrom( clazz ) ) {
-        	final BestChromosome snapshot = (BestChromosome) event;
-        	snapshot.print();
+            final BestChromosome snapshot = (BestChromosome) event;
+            snapshot.print();
         }
     }
 }

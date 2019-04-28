@@ -6,7 +6,7 @@ public interface Function
 {
     double getValue(
         double... variables );
-    
+
     double getValue(
-    	Collection<Double> variables);
+        Collection<Double> variables );
 }

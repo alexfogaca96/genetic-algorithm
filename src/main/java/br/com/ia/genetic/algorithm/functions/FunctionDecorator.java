@@ -20,12 +20,12 @@ public class FunctionDecorator
     {
         return function.getValue( variables );
     }
-    
+
     @Override
     public double getValue(
-    	final Collection<Double> variables )
+        final Collection<Double> variables )
     {
-    	return function.getValue( variables );
+        return function.getValue( variables );
     }
 
     @Override
