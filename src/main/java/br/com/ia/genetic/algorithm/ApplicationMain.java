@@ -7,6 +7,7 @@ import br.com.ia.genetic.algorithm.model.information.Problem;
 import br.com.ia.genetic.algorithm.strategies.Crossover;
 import br.com.ia.genetic.algorithm.strategies.MatingSelection;
 import br.com.ia.genetic.algorithm.strategies.Mutation;
+import br.com.ia.genetic.algorithm.strategies.ResultPropagation;
 
 public final class ApplicationMain
 {
@@ -23,13 +24,15 @@ public final class ApplicationMain
             .build();
 
         final Algorithm algorithm = Algorithm.builder()
-            .crossoverProbability( 0.8 )
+            .crossoverProbability( 0.75 )
             .crossoverStrategy( Crossover.UNIFORM )
-            .mutationProbability( 0.2 )
-            .mutationStrategy( Mutation.PROBABILITY_PER_GENE )
+            .mutationProbability( 0.20 )
+            .mutationStrategy( Mutation.N_GENES )
             .matingSelectionStrategy( MatingSelection.FITNESS_PROPORTIONATE )
-            .maximumGenerations( 1000 )
-            .populationSize( 50 )
+            .propagationQuantity( 1 )
+            .propagationStrategy( ResultPropagation.DEFAULT )
+            .maximumGenerations( 100 )
+            .populationSize( 10 )
             .build();
 
         new GeneticAlgorithmRunner().run( problem, algorithm );
