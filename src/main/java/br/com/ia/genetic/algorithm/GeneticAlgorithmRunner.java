@@ -1,6 +1,8 @@
 package br.com.ia.genetic.algorithm;
 
-import java.io.IOException;
+import static java.util.Collections.emptyList;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +13,6 @@ import br.com.ia.genetic.algorithm.messages.algorithm.BestChromosome;
 import br.com.ia.genetic.algorithm.messages.algorithm.PopulationSnapshot;
 import br.com.ia.genetic.algorithm.model.information.Algorithm;
 import br.com.ia.genetic.algorithm.model.information.Problem;
-import br.com.ia.genetic.algorithm.view.ChartConstructor;
 
 public final class GeneticAlgorithmRunner
     implements
@@ -23,8 +24,19 @@ public final class GeneticAlgorithmRunner
         final Problem problem,
         final Algorithm algorithm )
     {
+        run( problem, algorithm, emptyList() );
+    }
+
+    public void run(
+        final Problem problem,
+        final Algorithm algorithm,
+        final Collection<Observer> observers )
+    {
         final GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm( problem, algorithm );
         geneticAlgorithm.registerObserver( this );
+        for( final Observer observer : observers ) {
+            geneticAlgorithm.registerObserver( observer );
+        }
         final Thread thread = new Thread( geneticAlgorithm );
         GENETIC_ALGORITHMS.put( thread.getName(), geneticAlgorithm );
         thread.start();
@@ -55,14 +67,6 @@ public final class GeneticAlgorithmRunner
             GENETIC_ALGORITHMS.remove( result.getThreadName() );
             System.out.println( "\n========= END =========\n" );
             result.print();
-            try {
-            	String chart_name = ChartConstructor.generate_chart(result);
-            	System.out.println("Gráfico de fitness criado em: " +chart_name );
-            }catch(IOException e){
-            	System.out.println( "Erro ao gravar gráfico de fitness: " );
-            	System.out.println( e+"");
-            	e.printStackTrace();
-            }
         }
         if( PopulationSnapshot.class.isAssignableFrom( clazz ) ) {
             final PopulationSnapshot snapshot = (PopulationSnapshot) event;
