@@ -1,58 +1,69 @@
 package br.com.ia.genetic.algorithm.model.converter;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import br.com.ia.genetic.algorithm.model.Binary;
 
-/**
- * <p>
- * Dado um número de dimensões (D) e um {@link Binary}, converte para D
- * {@link Binary} dividindo sequencialmente.
- * </p>
- * Ex. <b>01101001 e 2 dimensões -> 0110 e 1001</b>
- * <p>
- * Assume-se que o número de bits do {@link Binary} dado é divisível por D.
- * </p>
- */
 public final class BinaryMultiDimensionalConverter
 {
+    private static final Logger LOGGER = Logger.getLogger( BinaryMultiDimensionalConverter.class.getName() );
+
+    /**
+     * <p>
+     * Given a number of dimensions (D) and a {@link Binary}, it converts
+     * to D binaries divided sequentially.
+     * </p>
+     * i.e. <b>01101001 and 2 dimensions -> 0110 and 1001</b>
+     * <p>
+     * It's assumed that the number of {@link Binary} bits is divisible by D.
+     * </p>
+     */
     public static List<Binary> convert(
         final Binary binary,
         final int numberOfDimensions )
     {
-        if( numberOfDimensions == 1 ) {
-            return Arrays.asList( binary );
-        }
         final int length = binary.length();
+        if( numberOfDimensions <= 0 || numberOfDimensions > length ) {
+            throw new BinaryConverterException( "Invalid number of dimensions " + numberOfDimensions );
+        }
+        if( numberOfDimensions == 1 ) {
+            LOGGER.warning( "1-dimensional binary conversion is an unnecessary operation" );
+            return Collections.singletonList( binary );
+        }
+        if( length % numberOfDimensions != 0 ) {
+            throw new BinaryConverterException( String.format(
+                "Number of dimensions %d is not divisible by binary length %d",
+                numberOfDimensions,
+                length ) );
+        }
+        return doConvert( binary, length, numberOfDimensions );
+    }
+
+    private static List<Binary> doConvert(
+        final Binary binary,
+        final int length,
+        final int numberOfDimensions )
+    {
+        final int maskLength = length / numberOfDimensions;
         final List<Binary> binaries = new LinkedList<>();
         for( int dimension = 0; dimension < numberOfDimensions; dimension++ ) {
-            binaries.add( buildMask( binary, length, length / numberOfDimensions, dimension ) );
+            final int initialIndex = maskLength * dimension;
+            final long maskedBits = extractBits( binary.getNumber(), initialIndex, initialIndex + maskLength );
+            binaries.add( Binary.of( maskedBits, length ) );
         }
+        LOGGER.info( String.format( "Successfully converted binary to %d binaries", numberOfDimensions ) );
         return binaries;
     }
 
-    private static Binary buildMask(
-        final Binary binary,
-        final int binaryLength,
-        final int maskLength,
-        final int order )
+    private static long extractBits(
+        final long value,
+        final int begin,
+        final int end )
     {
-        final StringBuilder builder = new StringBuilder();
-        for( int bit = 0; bit < binaryLength; bit++ ) {
-            if( bit >= maskLength * order && bit < maskLength * ( order + 1 ) ) {
-                builder.append( "1" );
-            } else {
-                builder.append( "0" );
-            }
-        }
-        final long binaryValue = Long.parseLong( builder.toString(), 2 );
-        final Binary maskBinary = binary.and( Binary.of( binaryValue, binaryLength ) );
-        long maskBinaryValue = maskBinary.getNumber();
-        while( maskBinaryValue > Math.pow( 2, maskLength ) ) {
-            maskBinaryValue = maskBinaryValue >>> 1;
-        }
-        return Binary.of( maskBinaryValue, maskLength );
+        final long mask = ( 1 << ( end - begin ) ) - 1;
+        return ( value >> begin ) & mask;
     }
 }
