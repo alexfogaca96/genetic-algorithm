@@ -13,6 +13,9 @@ public class Binary
         final long bits,
         final int numberOfBits )
     {
+        if( numberOfBits <= 0 ) {
+            throw new IllegalArgumentException( "Invalid numberOfBits value " + numberOfBits );
+        }
         this.bits = bits;
         this.numberOfBits = numberOfBits;
     }
@@ -27,7 +30,7 @@ public class Binary
     public static Binary random(
         final int numberOfBits )
     {
-        final long randomNumber = Double.valueOf( Math.random() * Math.pow( 2, numberOfBits ) ).intValue();
+        final long randomNumber = Double.valueOf( Math.random() * Math.pow( 2, numberOfBits ) ).longValue();
         return new Binary( randomNumber, numberOfBits );
     }
 
